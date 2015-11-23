@@ -171,7 +171,9 @@ export default Ember.Component.extend({
   _startUp() {
     this._applyEmojiAutocomplete();
 
-    loadScript('defer/html-sanitizer-bundle').then(() => this.set('ready', true));
+    loadScript('defer/markdown').then(() => {
+      loadScript('defer/html-sanitizer-bundle').then(() => this.set('ready', true));
+    });
 
     const mouseTrap = Mousetrap(this.$('.d-editor-input')[0]);
 

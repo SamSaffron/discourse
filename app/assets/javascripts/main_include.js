@@ -30,7 +30,6 @@
 //= require ./discourse/models/category
 //= require_tree ./discourse/mixins
 //= require ./discourse/lib/ajax-error
-//= require ./discourse/lib/markdown
 //= require ./discourse/lib/search
 //= require ./discourse/lib/user-search
 //= require ./discourse/lib/export-csv
@@ -70,7 +69,6 @@
 //= require ./discourse/components/topic-notifications-button
 //= require ./discourse/lib/link-mentions
 //= require ./discourse/views/header
-//= require ./discourse/dialects/dialect
 //= require ./discourse/lib/emoji/emoji
 //= require ./discourse/lib/emoji/emoji-groups
 //= require ./discourse/lib/emoji/emoji-toolbar
@@ -95,7 +93,6 @@
 //= require_tree ./discourse/lib
 //= require ./discourse/router
 
-//= require_tree ./discourse/dialects
 //= require_tree ./discourse/controllers
 //= require_tree ./discourse/models
 //= require_tree ./discourse/components

@@ -1,6 +1,6 @@
 /*global md5 */
 
-(function() {
+Discourse.markdownReady(function() {
 
   var DATA_PREFIX = "data-poll-";
   var DEFAULT_POLL_NAME = "poll";
@@ -168,4 +168,4 @@
   Discourse.Markdown.whiteListTag("a", "class", /^button (cast-votes|toggle-results)/);
 
   Discourse.Markdown.whiteListTag("li", "data-*");
-})();
+});

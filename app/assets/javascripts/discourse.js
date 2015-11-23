@@ -134,7 +134,6 @@ window.Discourse = Ember.Application.createWithMixins(Discourse.Ajax, {
     return desired && Discourse.get("currentAssetVersion") !== desired;
   }.property("currentAssetVersion", "desiredAssetVersion"),
 
-
   assetVersion: Ember.computed({
     get: function() {
       return this.get("currentAssetVersion");

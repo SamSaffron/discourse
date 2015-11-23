@@ -50,7 +50,7 @@ Discourse.Ajax = Em.Mixin.create({
       }
 
       args.success = function(data, textStatus, xhr) {
-        if (xhr.getResponseHeader('Discourse-Readonly')) {
+        if (xhr && xhr.getResponseHeader && xhr.getResponseHeader('Discourse-Readonly')) {
           Ember.run(function() {
             Discourse.Site.currentProp('isReadOnly', true);
           });
