@@ -1,1 +1,20 @@
+<section class='user-navigation'>
+  <ul class='action-list nav-stacked'>
+    {{activity-filter count=model.statsCountNonPM user=model userActionType=userActionType indexStream=indexStream}}
+    {{#each stat in model.statsExcludingPms}}
+      {{activity-filter content=stat user=model userActionType=userActionType indexStream=indexStream}}
+    {{/each}}
+  </ul>
+
+  {{#if viewingSelf}}
+    <div class='user-archive'>
+      {{d-button action="exportUserArchive" label="user.download_archive" icon="download"}}
+    </div>
+  {{/if}}
+
+</section>
+
+<section class='user-right'>
 {{outlet}}
+</section>
+

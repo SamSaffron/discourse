@@ -63,8 +63,14 @@ export default function() {
       });
     });
 
+    this.resource('userNotifications', {path: '/notifications'}, function(){
+      this.route('responses');
+      this.route('likesReceived', { path: 'likes-received'});
+      this.route('mentions');
+      this.route('edits');
+    });
+
     this.route('badges');
-    this.route('notifications');
     this.route('flaggedPosts', { path: '/flagged-posts' });
     this.route('deletedPosts', { path: '/deleted-posts' });
 
@@ -85,6 +91,8 @@ export default function() {
     this.resource('userInvited', { path: '/invited' }, function() {
       this.route('show', { path: '/:filter' });
     });
+
+    this.route('statistics');
   });
 
   this.route('signup', {path: '/signup'});
