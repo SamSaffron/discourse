@@ -58,9 +58,10 @@ export default function() {
   this.resource('users');
   this.resource('user', { path: '/users/:username' }, function() {
     this.resource('userActivity', { path: '/activity' }, function() {
-      _.map(Discourse.UserAction.TYPES, (id, userAction) => {
-        this.route(userAction, { path: userAction.replace('_', '-') });
-      });
+      this.route('topics');
+      this.route('replies');
+      this.route('likesGiven', {path: 'likes-given'});
+      this.route('bookmarks');
     });
 
     this.resource('userNotifications', {path: '/notifications'}, function(){
