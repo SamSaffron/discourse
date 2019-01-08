@@ -5,6 +5,9 @@ module Jobs
 
   class ProcessPost < Jobs::Base
 
+    # due to nokogiri and images
+    sidekiq_options queue: 'high_cpu'
+
     def execute(args)
       post = Post.find_by(id: args[:post_id])
       # two levels of deletion

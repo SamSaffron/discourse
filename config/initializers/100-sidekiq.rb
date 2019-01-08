@@ -4,14 +4,6 @@ Sidekiq.configure_client do |config|
   config.redis = Discourse.sidekiq_redis_config
 end
 
-Sidekiq.configure_server do |config|
-  config.redis = Discourse.sidekiq_redis_config
-
-  config.server_middleware do |chain|
-    chain.add Sidekiq::Pausable
-  end
-end
-
 MiniScheduler.configure do |config|
 
   config.redis = $redis
@@ -31,6 +23,24 @@ MiniScheduler.configure do |config|
 end
 
 if Sidekiq.server?
+
+  require "sidekiq/high_cpu_fetch"
+  Sidekiq.configure_server do |config|
+    config.redis = Discourse.sidekiq_redis_config
+
+    config.options[:fetch] = Sidekiq::HighCpuFetch
+
+    config.server_middleware do |chain|
+      chain.add Sidekiq::DoneMiddleware
+      chain.add Sidekiq::Pausable
+    end
+
+    Sidekiq::HighCpuFetch::QueueCounter.instance.max_concurrency =
+      GlobalSetting.sidekiq_max_concurrent_high_cpu_jobs
+
+    Sidekiq::HighCpuFetch::QueueCounter.instance.watched_queues =
+      ['queue:high_cpu', 'queue:high_cpu_low']
+  end
 
   module Sidekiq
     class CLI

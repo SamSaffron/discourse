@@ -515,7 +515,7 @@ class Post < ActiveRecord::Base
     PostRevisor.new(self).revise!(updated_by, changes, opts)
   end
 
-  def self.rebake_old(limit)
+  def self.rebake_old(limit, priority: :normal)
 
     limiter = RateLimiter.new(
       nil,
@@ -534,7 +534,7 @@ class Post < ActiveRecord::Base
         break if !limiter.can_perform?
 
         post = Post.find(id)
-        post.rebake!
+        post.rebake!(priority: priority)
 
         begin
           limiter.performed!
@@ -578,7 +578,7 @@ class Post < ActiveRecord::Base
     QuotedPost.extract_from(self)
 
     # make sure we trigger the post process
-    trigger_post_process(bypass_bump: true)
+    trigger_post_process(bypass_bump: true, priority: opts[:priority])
 
     publish_change_to_clients!(:rebaked)
 
@@ -692,7 +692,7 @@ class Post < ActiveRecord::Base
   end
 
   # Enqueue post processing for this post
-  def trigger_post_process(bypass_bump: false)
+  def trigger_post_process(bypass_bump: false, priority: :normal)
     args = {
       post_id: id,
       bypass_bump: bypass_bump,
@@ -700,6 +700,11 @@ class Post < ActiveRecord::Base
     args[:image_sizes] = image_sizes if image_sizes.present?
     args[:invalidate_oneboxes] = true if invalidate_oneboxes.present?
     args[:cooking_options] = self.cooking_options
+
+    if priority == :low
+      args[:queue] = 'high_cpu_low'
+    end
+
     Jobs.enqueue(:process_post, args)
     DiscourseEvent.trigger(:after_trigger_post_process, self)
   end

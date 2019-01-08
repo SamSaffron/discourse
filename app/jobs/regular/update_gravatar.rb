@@ -2,7 +2,8 @@ module Jobs
 
   class UpdateGravatar < Jobs::Base
 
-    sidekiq_options queue: 'low'
+    # download is cheap but avatar thumbnail creation is not
+    sidekiq_options queue: 'high_cpu'
 
     def execute(args)
       user = User.find_by(id: args[:user_id])

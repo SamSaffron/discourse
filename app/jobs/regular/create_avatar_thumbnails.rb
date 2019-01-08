@@ -1,7 +1,7 @@
 module Jobs
 
   class CreateAvatarThumbnails < Jobs::Base
-    sidekiq_options queue: 'low'
+    sidekiq_options queue: 'high_cpu'
 
     def execute(args)
       return if Rails.env.test?

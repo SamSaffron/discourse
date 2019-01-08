@@ -5,7 +5,9 @@ require_dependency 'upload_creator'
 module Jobs
 
   class PullHotlinkedImages < Jobs::Base
-    sidekiq_options queue: 'low'
+    # even though cpu is not usually high here, once downloaded
+    # this does resizing which can get expensive CPU wise
+    sidekiq_options queue: 'high_cpu'
 
     def initialize
       @max_size = SiteSetting.max_image_size_kb.kilobytes
