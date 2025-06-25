@@ -864,6 +864,20 @@ class Search
       else
         posts = posts.order("posts.like_count DESC")
       end
+    elsif @order == :read
+      if @guardian.user
+        posts = posts.joins(<<~SQL)
+          LEFT JOIN topic_users tu ON
+            tu.topic_id = posts.topic_id AND
+            tu.user_id = #{@guardian.user.id}
+        SQL
+
+        if aggregate_search
+          posts = posts.order("MAX(tu.last_visited_at) DESC NULLS LAST")
+        else
+          posts = posts.reorder("tu.last_visited_at DESC NULLS LAST")
+        end
+      end
     elsif allow_relevance_search
       posts = sort_by_relevance(posts, type_filter: type_filter, aggregate_search: aggregate_search)
     end

@@ -2315,6 +2315,28 @@ RSpec.describe Search do
       )
     end
 
+    it "can order by read" do
+      user = Fabricate(:user)
+
+      post1 = nil
+      freeze_time 2.hours.ago do
+        post1 = Fabricate(:post, raw: "Topic")
+        TopicUser.update_last_read(user, post1.topic.id, 1, 1, 0)
+      end
+
+      post2 = nil
+      freeze_time 1.hour.ago do
+        post2 = Fabricate(:post, raw: "Topic")
+        TopicUser.update_last_read(user, post2.topic.id, 1, 1, 0)
+      end
+
+      post3 = Fabricate(:post, raw: "Topic")
+
+      expect(
+        Search.execute("Topic order:read", guardian: Guardian.new(user)).posts.map(&:id),
+      ).to eq([post2.id, post1.id, post3.id])
+    end
+
     it "can search for terms with dots" do
       post = Fabricate(:post, raw: "Will.2000 Will.Bob.Bill...")
       expect(Search.execute("bill").posts.map(&:id)).to eq([post.id])
