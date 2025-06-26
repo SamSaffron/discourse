@@ -2,7 +2,7 @@
 
 module DiscoursePoll
   class PollsUpdater
-    POLL_ATTRIBUTES = %w[close_at max min results status step type visibility title groups]
+    POLL_ATTRIBUTES = %w[close_at max min results status step type visibility title groups flexible]
 
     def self.update(post, polls)
       ::Poll.transaction do
@@ -43,12 +43,11 @@ module DiscoursePoll
             end
             attributes["status"] = old_poll["status"]
             attributes["groups"] = new_poll["groups"]
+            attributes["flexible"] = new_poll["flexible"] == "true"
             poll = ::Poll.new(attributes)
 
             if is_different?(old_poll, poll, new_poll_options)
-              # only prevent changes when there's at least 1 vote
-              if old_poll.poll_votes.size > 0
-                # can't change after edit window (when enabled)
+              if old_poll.poll_votes.size > 0 && !old_poll.flexible?
                 if edit_window > 0 && old_poll.created_at < edit_window.minutes.ago
                   error =
                     (
@@ -73,28 +72,46 @@ module DiscoursePoll
                 end
               end
 
-              # update poll
               POLL_ATTRIBUTES.each do |attr|
                 old_poll.public_send("#{attr}=", poll.public_send(attr))
               end
 
               old_poll.save!
 
-              # keep track of anonymous votes
-              anonymous_votes =
-                old_poll.poll_options.map { |pv| [pv.digest, pv.anonymous_votes] }.to_h
+              if old_poll.flexible? && old_poll.poll_votes.size > 0
+                existing = old_poll.poll_options.index_by(&:digest)
+                incoming = new_poll_options.index_by { |o| o["id"] }
 
-              # destroy existing options & votes
-              ::PollOption.where(poll: old_poll).destroy_all
+                (existing.keys - incoming.keys).each do |digest|
+                  ::PollOption.find_by(poll: old_poll, digest: digest)&.destroy
+                end
 
-              # create new options
-              new_poll_options.each do |option|
-                ::PollOption.create!(
-                  poll: old_poll,
-                  digest: option["id"],
-                  html: option["html"].strip,
-                  anonymous_votes: anonymous_votes[option["id"]],
-                )
+                new_poll_options.each do |option|
+                  if (opt = existing[option["id"]])
+                    new_html = option["html"].strip
+                    opt.update!(html: new_html) if opt.html != new_html
+                  else
+                    ::PollOption.create!(
+                      poll: old_poll,
+                      digest: option["id"],
+                      html: option["html"].strip,
+                    )
+                  end
+                end
+              else
+                anonymous_votes =
+                  old_poll.poll_options.map { |pv| [pv.digest, pv.anonymous_votes] }.to_h
+
+                ::PollOption.where(poll: old_poll).destroy_all
+
+                new_poll_options.each do |option|
+                  ::PollOption.create!(
+                    poll: old_poll,
+                    digest: option["id"],
+                    html: option["html"].strip,
+                    anonymous_votes: anonymous_votes[option["id"]],
+                  )
+                end
               end
 
               has_changed = true

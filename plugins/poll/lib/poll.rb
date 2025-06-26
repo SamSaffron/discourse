@@ -402,6 +402,7 @@ class DiscoursePoll::Poll
         step: poll["step"],
         chart_type: poll["charttype"] || "bar",
         groups: poll["groups"],
+        flexible: poll["flexible"] == "true",
       )
 
     poll["options"].each do |option|
@@ -430,7 +431,11 @@ class DiscoursePoll::Poll
       .HTML5(cooked)
       .css("div.poll")
       .map do |p|
-        poll = { "options" => [], "name" => DiscoursePoll::DEFAULT_POLL_NAME }
+        poll = {
+          "options" => [],
+          "name" => DiscoursePoll::DEFAULT_POLL_NAME,
+          "flexible" => "false",
+        }
 
         # attributes
         p.attributes.values.each do |attribute|
