@@ -59,5 +59,9 @@ module EmailControllerHelper
 
       updated
     end
+
+    def default_unsubscribe_params
+      { digest_after_minutes: "0" }
+    end
   end
 end

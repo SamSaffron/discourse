@@ -29,7 +29,13 @@ class EmailController < ApplicationController
     key = UnsubscribeKey.includes(:user).find_by(key: params[:key])
     raise Discourse::NotFound if key.nil? || key.user.nil?
     user = key.user
-    updated = UnsubscribeKey.get_unsubscribe_strategy_for(key)&.unsubscribe(params)
+
+    unsubscriber = UnsubscribeKey.get_unsubscribe_strategy_for(key)
+    if (params["List-Unsubscribe"] || params["list-unsubscribe"])&.casecmp?("One-Click")
+      updated = unsubscriber&.unsubscribe(unsubscriber.default_unsubscribe_params)
+    else
+      updated = unsubscriber&.unsubscribe(params)
+    end
 
     if updated
       cache_key = "unsub_#{SecureRandom.hex}"

@@ -45,6 +45,25 @@ RSpec.describe EmailController do
         expect(response.status).to eq(302)
         expect(user.user_option.reload.mailing_list_mode).to eq(false)
       end
+
+      it "supports one-click unsubscribe" do
+        user.user_option.update_columns(
+          email_digests: true,
+          email_level: UserOption.email_level_types[:never],
+          email_messages_level: UserOption.email_level_types[:never],
+          mailing_list_mode: true,
+        )
+
+        post "/email/unsubscribe/#{key}.json", params: { "List-Unsubscribe": "One-Click" }
+
+        expect(response.status).to eq(302)
+        get response.redirect_url
+        expect(body).to include(user.email)
+
+        user.user_option.reload
+        expect(user.user_option.email_digests).to eq(false)
+        expect(user.user_option.mailing_list_mode).to eq(false)
+      end
     end
 
     describe "unsubscribe from digest" do

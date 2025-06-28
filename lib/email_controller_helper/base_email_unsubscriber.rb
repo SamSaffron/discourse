@@ -50,6 +50,10 @@ module EmailControllerHelper
       updated
     end
 
+    def default_unsubscribe_params
+      { unsubscribe_all: "1" }
+    end
+
     protected
 
     def key_owner
