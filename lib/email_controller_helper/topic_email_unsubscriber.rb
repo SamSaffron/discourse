@@ -75,5 +75,19 @@ module EmailControllerHelper
 
       updated
     end
+
+    def default_unsubscribe_params
+      topic = unsubscribe_key.associated_topic
+      return { unsubscribe_all: "1" } if topic.nil?
+
+      watching = TopicUser.notification_levels[:watching]
+      is_watching =
+        TopicUser.exists?(user: key_owner, notification_level: watching, topic_id: topic.id)
+      if is_watching
+        { unwatch_topic: "1" }
+      else
+        { mute_topic: "1" }
+      end
+    end
   end
 end
