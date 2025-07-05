@@ -7,6 +7,7 @@ import { service } from "@ember/service";
 import { and } from "truth-helpers";
 import BulkSelectToggle from "discourse/components/bulk-select-toggle";
 import DButton from "discourse/components/d-button";
+import TopicFilterModal from "discourse/components/modal/topic-filter-modal";
 import PluginOutlet from "discourse/components/plugin-outlet";
 import bodyClass from "discourse/helpers/body-class";
 import icon from "discourse/helpers/d-icon";
@@ -17,6 +18,7 @@ import { resettableTracked } from "discourse/lib/tracked-tools";
 
 export default class DiscoveryFilterNavigation extends Component {
   @service site;
+  @service modal;
 
   @tracked copyIcon = "link";
   @tracked copyClass = "btn-default";
@@ -52,6 +54,12 @@ export default class DiscoveryFilterNavigation extends Component {
     this.copyClass = "btn-default";
   }
 
+
+  @action
+  openAdvancedFilters() {
+    this.modal.show(TopicFilterModal, { model: { updateQueryString: this.args.updateTopicsListQueryParams } });
+  }
+
   <template>
     {{bodyClass "navigation-filter"}}
 
@@ -62,6 +70,7 @@ export default class DiscoveryFilterNavigation extends Component {
             <BulkSelectToggle @bulkSelectHelper={{@bulkSelectHelper}} />
           </div>
         {{/if}}
+        <DButton @icon="sliders" @title="filter_modal.open" @action={{this.openAdvancedFilters}} class="topic-query-filter__advanced"/>
 
         <div class="topic-query-filter__input">
           {{icon "filter" class="topic-query-filter__icon"}}

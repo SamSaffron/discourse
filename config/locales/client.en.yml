@@ -3227,6 +3227,23 @@ en:
         additional_options:
           label: "Filter by post count and topic views"
 
+    filter_modal:
+      open: "Open advanced filters"
+      title: "Filter topics"
+      apply: "Apply Filters"
+      cancel: "Cancel"
+      categories: "Categories"
+      tags: "Tags"
+      status:
+        label: "Status"
+        any: "Any"
+        open: "Open"
+        closed: "Closed"
+        archived: "Archived"
+        listed: "Listed"
+        unlisted: "Unlisted"
+      date: "Date range"
+
     hamburger_menu: "Navigation menu"
     new_item: "new"
     go_back: "go back"
