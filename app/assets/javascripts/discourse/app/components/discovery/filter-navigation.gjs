@@ -8,6 +8,7 @@ import { and } from "truth-helpers";
 import BulkSelectToggle from "discourse/components/bulk-select-toggle";
 import DButton from "discourse/components/d-button";
 import PluginOutlet from "discourse/components/plugin-outlet";
+import TopicFilterModal from "discourse/components/topic-filter-modal";
 import bodyClass from "discourse/helpers/body-class";
 import icon from "discourse/helpers/d-icon";
 import lazyHash from "discourse/helpers/lazy-hash";
@@ -17,6 +18,7 @@ import { resettableTracked } from "discourse/lib/tracked-tools";
 
 export default class DiscoveryFilterNavigation extends Component {
   @service site;
+  @service modal;
 
   @tracked copyIcon = "link";
   @tracked copyClass = "btn-default";
@@ -41,6 +43,22 @@ export default class DiscoveryFilterNavigation extends Component {
     navigator.clipboard.writeText(window.location);
 
     discourseDebounce(this._restoreButton, 3000);
+  }
+
+  @action
+  /**
+   * Opens the modal for advanced topic filtering.
+   */
+  openAdvancedModal() {
+    this.modal.show(TopicFilterModal, {
+      model: {
+        currentQuery: this.newQueryString,
+        apply: (query) => {
+          this.updateQueryString(query);
+          this.args.updateTopicsListQueryParams(query);
+        },
+      },
+    });
   }
 
   @bind
@@ -72,6 +90,12 @@ export default class DiscoveryFilterNavigation extends Component {
             @type="text"
             id="queryStringInput"
             autocomplete="off"
+          />
+          <DButton
+            class="btn-transparent topic-query-filter__advanced"
+            @icon="sliders"
+            @title="filters.filter.button.advanced"
+            @action={{this.openAdvancedModal}}
           />
           {{! EXPERIMENTAL OUTLET - don't use because it will be removed soon  }}
           <PluginOutlet
