@@ -1,0 +1,14 @@
+.topic-filter-modal {
+  .d-modal__body {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  .form-kit__actions {
+    margin-top: 0.5em;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
