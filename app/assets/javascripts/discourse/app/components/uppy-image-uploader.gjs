@@ -8,12 +8,11 @@ import { service } from "@ember/service";
 import { htmlSafe } from "@ember/template";
 import { isEmpty } from "@ember/utils";
 import { modifier } from "ember-modifier";
-import $ from "jquery";
 import DButton from "discourse/components/d-button";
 import PickFilesButton from "discourse/components/pick-files-button";
 import icon from "discourse/helpers/d-icon";
 import { getURLWithCDN } from "discourse/lib/get-url";
-import lightbox from "discourse/lib/lightbox";
+import lightbox, { cleanupLightboxes } from "discourse/lib/lightbox";
 import { authorizesOneOrMoreExtensions } from "discourse/lib/uploads";
 import UppyUpload from "discourse/lib/uppy/uppy-upload";
 import { i18n } from "discourse-i18n";
@@ -49,15 +48,12 @@ export default class UppyImageUploader extends Component {
   });
 
   applyLightbox = modifier(() =>
-    lightbox(
-      document.querySelector(`#${this.args.id}.image-uploader`),
-      this.siteSettings
-    )
+    lightbox(document.querySelector(`#${this.args.id}.image-uploader`))
   );
 
   willDestroy() {
     super.willDestroy(...arguments);
-    $.magnificPopup?.instance.close();
+    cleanupLightboxes();
   }
 
   get disabled() {
@@ -123,12 +119,9 @@ export default class UppyImageUploader extends Component {
 
   @action
   toggleLightbox() {
-    const lightboxElement = document.querySelector(
-      `#${this.args.id} a.lightbox`
-    );
-
-    if (lightboxElement) {
-      $(lightboxElement).magnificPopup("open");
+    const wrapper = document.querySelector(`#${this.args.id}.image-uploader`);
+    if (wrapper) {
+      lightbox(wrapper);
     }
   }
 
