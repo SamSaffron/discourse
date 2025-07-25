@@ -16,6 +16,7 @@ class PollSerializer < ApplicationSerializer
              :preloaded_voters,
              :chart_type,
              :groups,
+             :flexible,
              :title,
              :ranked_choice_outcome
 
@@ -41,6 +42,10 @@ class PollSerializer < ApplicationSerializer
 
   def include_groups?
     groups.present?
+  end
+
+  def include_flexible?
+    object.flexible?
   end
 
   def options

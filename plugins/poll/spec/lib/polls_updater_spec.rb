@@ -30,6 +30,21 @@ RSpec.describe DiscoursePoll::PollsUpdater do
       [/poll]
     RAW
 
+  let(:flexible_post) { Fabricate(:post, raw: <<~RAW) }
+      [poll flexible=true]
+      - A
+      - B
+      [/poll]
+    RAW
+
+  let(:flexible_polls) { DiscoursePoll::PollsValidator.new(flexible_post).validate_polls }
+
+  let(:flexible_polls_with_more_options) do
+    p = DiscoursePoll::PollsValidator.new(post_with_3_options).validate_polls
+    p["poll"]["flexible"] = "true"
+    p
+  end
+
   let(:polls) { DiscoursePoll::PollsValidator.new(post).validate_polls }
 
   let(:polls_with_3_options) do
@@ -182,6 +197,31 @@ RSpec.describe DiscoursePoll::PollsUpdater do
                 minutes: edit_window,
               ),
             )
+          end
+        end
+
+        describe "outside the edit window with a flexible poll" do
+          let(:post) { flexible_post }
+
+          it "allows changing options without deleting existing votes" do
+            expect {
+              DiscoursePoll::Poll.vote(
+                user,
+                post.id,
+                "poll",
+                [flexible_polls["poll"]["options"][0]["id"]],
+              )
+            }.to change { PollVote.count }.by(1)
+
+            freeze_time (SiteSetting.poll_edit_window_mins + 1).minutes.from_now
+
+            update(post, flexible_polls_with_more_options)
+
+            poll = Poll.find_by(post: post)
+
+            expect(poll.poll_options.size).to eq(3)
+            expect(poll.poll_votes.size).to eq(1)
+            expect(post.errors[:base]).to be_empty
           end
         end
       end
