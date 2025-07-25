@@ -1,34 +1,16 @@
-import $ from "jquery";
-import { spinnerHTML } from "discourse/helpers/loading-spinner";
-import loadScript from "discourse/lib/load-script";
-import { i18n } from "discourse-i18n";
+import "photoswipe/style.css";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
 
-export default function lightbox(images) {
-  loadScript("/javascripts/jquery.magnific-popup.min.js").then(function () {
-    $(images).magnificPopup({
-      type: "image",
-      closeOnContentClick: false,
-      mainClass: "mfp-zoom-in",
-      tClose: i18n("lightbox.close"),
-      tLoading: spinnerHTML,
-      image: {
-        verticalFit: true,
-      },
-      gallery: {
-        enabled: true,
-      },
-      callbacks: {
-        elementParse: (item) => {
-          item.src = item.el[0].dataset.largeSrc || item.el[0].src;
-        },
-        open: function () {
-          this.touchActionValue = document.body.style.touchAction;
-          document.body.style.touchAction = "";
-        },
-        close: function () {
-          document.body.style.touchAction = this.touchActionValue;
-        },
-      },
-    });
+export default async function lightbox(images) {
+  if (!images || !images.length) {
+    return;
+  }
+
+  const pswpLightbox = new PhotoSwipeLightbox({
+    gallery: images[0].parentElement,
+    children: "img",
+    pswpModule: () => import("photoswipe"),
   });
+
+  pswpLightbox.init();
 }

@@ -1,5 +1,5 @@
 import { scheduleOnce } from "@ember/runloop";
-import $ from "jquery";
+import { cleanupLightboxes } from "discourse/lib/lightbox";
 
 function _clean(transition) {
   if (window.MiniProfiler && transition.from) {
@@ -15,11 +15,7 @@ function _clean(transition) {
     element.parentElement.classList.remove("open");
   });
 
-  // Close the lightbox
-  if ($.magnificPopup?.instance) {
-    $.magnificPopup.instance.close();
-    document.body.classList.remove("mfp-zoom-out-cur");
-  }
+  cleanupLightboxes();
 
   // Remove any link focus
   const { activeElement } = document;
