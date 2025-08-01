@@ -86,6 +86,7 @@ class UserOption < ActiveRecord::Base
     self.enable_defer = SiteSetting.default_other_enable_defer
     self.external_links_in_new_tab = SiteSetting.default_other_external_links_in_new_tab
     self.dynamic_favicon = SiteSetting.default_other_dynamic_favicon
+    self.monospace_editor_font = SiteSetting.default_other_monospace_editor_font
     self.skip_new_user_tips = SiteSetting.default_other_skip_new_user_tips
 
     self.new_topic_duration_minutes = SiteSetting.default_other_new_topic_duration_minutes

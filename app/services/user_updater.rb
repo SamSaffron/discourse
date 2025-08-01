@@ -30,6 +30,7 @@ class UserUpdater
     dark_scheme_id
     interface_color_mode
     dynamic_favicon
+    monospace_editor_font
     automatically_unpin_topics
     digest_after_minutes
     new_topic_duration_minutes

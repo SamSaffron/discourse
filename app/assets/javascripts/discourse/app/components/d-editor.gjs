@@ -738,8 +738,8 @@ export default class DEditor extends Component {
     <div
       class="d-editor-container
         {{if
-          this.siteSettings.rich_editor
-          'd-editor-container--rich-editor-enabled'
+          this.currentUser.user_option.monospace_editor_font
+          'd-editor-container--monospace'
         }}"
     >
       <div class="d-editor-textarea-column">

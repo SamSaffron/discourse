@@ -117,6 +117,7 @@ class SiteSettingUpdateExistingUsers
       default_other_enable_defer: "enable_defer",
       default_other_external_links_in_new_tab: "external_links_in_new_tab",
       default_other_dynamic_favicon: "dynamic_favicon",
+      default_other_monospace_editor_font: "monospace_editor_font",
       default_other_new_topic_duration_minutes: "new_topic_duration_minutes",
       default_other_auto_track_topics_after_msecs: "auto_track_topics_after_msecs",
       default_other_notification_level_when_replying: "notification_level_when_replying",

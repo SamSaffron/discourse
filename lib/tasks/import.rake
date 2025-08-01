@@ -193,6 +193,7 @@ def insert_user_options
                   enable_smart_lists,
                   external_links_in_new_tab,
                   dynamic_favicon,
+                  monospace_editor_font,
                   new_topic_duration_minutes,
                   auto_track_topics_after_msecs,
                   notification_level_when_replying,
@@ -220,6 +221,7 @@ def insert_user_options
                   , #{SiteSetting.default_other_enable_smart_lists}
                   , #{SiteSetting.default_other_external_links_in_new_tab}
                   , #{SiteSetting.default_other_dynamic_favicon}
+                  , #{SiteSetting.default_other_monospace_editor_font}
                   , #{SiteSetting.default_other_new_topic_duration_minutes}
                   , #{SiteSetting.default_other_auto_track_topics_after_msecs}
                   , #{SiteSetting.default_other_notification_level_when_replying}

@@ -49,11 +49,16 @@ RSpec.describe UserSerializer do
       SiteSetting.default_other_new_topic_duration_minutes = 60 * 24
 
       user = Fabricate(:user)
-      user.user_option.update(dynamic_favicon: true, skip_new_user_tips: true)
+      user.user_option.update(
+        dynamic_favicon: true,
+        skip_new_user_tips: true,
+        monospace_editor_font: true,
+      )
 
       json = UserSerializer.new(user, scope: Guardian.new(user), root: false).as_json
 
       expect(json[:user_option][:dynamic_favicon]).to eq(true)
+      expect(json[:user_option][:monospace_editor_font]).to eq(true)
       expect(json[:user_option][:skip_new_user_tips]).to eq(true)
       expect(json[:user_option][:new_topic_duration_minutes]).to eq(60 * 24)
       expect(json[:user_option][:auto_track_topics_after_msecs]).to eq(0)

@@ -3743,6 +3743,9 @@ user_preferences:
   default_other_dynamic_favicon:
     default: false
     area: "user_defaults"
+  default_other_monospace_editor_font:
+    default: false
+    area: "user_defaults"
   default_other_skip_new_user_tips:
     default: false
     area: "user_defaults"

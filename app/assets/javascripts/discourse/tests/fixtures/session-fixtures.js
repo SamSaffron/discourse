@@ -45,6 +45,7 @@ export default {
         enable_quoting: true,
         enable_smart_lists: true,
         dynamic_favicon: true,
+        monospace_editor_font: false,
         title_count_mode: "notifications",
         timezone: "Australia/Brisbane",
         skip_new_user_tips: false,

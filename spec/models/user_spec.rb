@@ -2179,6 +2179,7 @@ RSpec.describe User do
       SiteSetting.default_other_enable_quoting = false
       SiteSetting.default_other_enable_smart_lists = false
       SiteSetting.default_other_dynamic_favicon = true
+      SiteSetting.default_other_monospace_editor_font = true
       SiteSetting.default_other_skip_new_user_tips = true
 
       SiteSetting.default_hide_profile = true
@@ -2203,6 +2204,7 @@ RSpec.describe User do
       expect(options.enable_quoting).to eq(false)
       expect(options.enable_smart_lists).to eq(false)
       expect(options.dynamic_favicon).to eq(true)
+      expect(options.monospace_editor_font).to eq(true)
       expect(options.skip_new_user_tips).to eq(true)
       expect(options.hide_profile).to eq(true)
       expect(options.hide_presence).to eq(true)

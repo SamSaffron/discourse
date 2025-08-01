@@ -234,6 +234,12 @@ export default RouteTemplate(
         data-setting-name="user-dynamic-favicon"
         class="pref-dynamic-favicon"
       />
+      <PreferenceCheckbox
+        @labelKey="user.monospace_editor_font"
+        @checked={{@controller.model.user_option.monospace_editor_font}}
+        data-setting-name="user-monospace-editor-font"
+        class="pref-monospace-editor-font"
+      />
       <div
         class="controls controls-dropdown pref-page-title"
         data-setting-name="user-page-title"

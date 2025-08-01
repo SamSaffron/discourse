@@ -173,6 +173,7 @@ CREATE TABLE user_options
     dismissed_channel_retention_reminder BOOLEAN,
     dismissed_dm_retention_reminder      BOOLEAN,
     dynamic_favicon                      BOOLEAN,
+    monospace_editor_font                BOOLEAN,
     email_digests                        BOOLEAN,
     email_in_reply_to                    BOOLEAN,
     email_level                          INTEGER,

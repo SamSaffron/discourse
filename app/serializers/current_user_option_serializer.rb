@@ -6,6 +6,7 @@ class CurrentUserOptionSerializer < ApplicationSerializer
              :enable_quoting,
              :enable_smart_lists,
              :dynamic_favicon,
+             :monospace_editor_font,
              :automatically_unpin_topics,
              :likes_notifications_disabled,
              :hide_profile_and_presence,
