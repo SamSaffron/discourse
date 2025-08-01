@@ -11,6 +11,7 @@ class UserOptionSerializer < ApplicationSerializer
              :color_scheme_id,
              :dark_scheme_id,
              :dynamic_favicon,
+             :monospace_editor_font,
              :enable_quoting,
              :enable_smart_lists,
              :enable_defer,

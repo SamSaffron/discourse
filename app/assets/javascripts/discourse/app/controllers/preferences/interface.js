@@ -70,6 +70,7 @@ export default class InterfaceController extends Controller {
       "locale",
       "external_links_in_new_tab",
       "dynamic_favicon",
+      "monospace_editor_font",
       "enable_quoting",
       "enable_smart_lists",
       "enable_defer",

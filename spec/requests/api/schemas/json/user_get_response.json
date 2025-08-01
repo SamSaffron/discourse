@@ -711,6 +711,9 @@
             "dynamic_favicon": {
               "type": "boolean"
             },
+            "monospace_editor_font": {
+              "type": "boolean"
+            },
             "enable_quoting": {
               "type": "boolean"
             },
@@ -834,6 +837,7 @@
             "color_scheme_id",
             "dark_scheme_id",
             "dynamic_favicon",
+            "monospace_editor_font",
             "enable_quoting",
             "enable_smart_lists",
             "enable_defer",

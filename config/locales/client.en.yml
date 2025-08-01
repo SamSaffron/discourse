@@ -1539,6 +1539,7 @@ en:
         <br><br>
         Look for the %{icon} to decide which specific topics, categories and tags you want to be notified about. For more, see your <a href='%{preferencesUrl}'>notification preferences</a>.
       dynamic_favicon: "Show counts on browser icon"
+      monospace_editor_font: "Use monospace font in composer's Markdown mode"
       skip_new_user_tips:
         description: "Skip new user onboarding tips and badges"
       reset_seen_user_tips: "Show user tips again"

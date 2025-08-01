@@ -63,6 +63,7 @@ export const DEFAULT_USER_PREFERENCES = [
   "default_other_enable_smart_lists",
   "default_other_enable_defer",
   "default_other_dynamic_favicon",
+  "default_other_monospace_editor_font",
   "default_other_like_notification_frequency",
   "default_other_skip_new_user_tips",
   "default_topics_automatic_unpin",

@@ -41,6 +41,7 @@ module Migrations::Converters::Discourse
         dismissed_channel_retention_reminder: item[:dismissed_channel_retention_reminder],
         dismissed_dm_retention_reminder: item[:dismissed_dm_retention_reminder],
         dynamic_favicon: item[:dynamic_favicon],
+        monospace_editor_font: item[:monospace_editor_font],
         email_digests: item[:email_digests],
         email_in_reply_to: item[:email_in_reply_to],
         email_level: item[:email_level],
